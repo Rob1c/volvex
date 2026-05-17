@@ -48,7 +48,7 @@ jobs:
             dpkg-deb -x mimage.deb mimage_extracted
             find mimage_extracted -type f
             cp mimage_extracted/usr/bin/mimage ./mimage
-            cp mimage_extracted/usr/bin/Macintosh.exe ./Macintosh.exe
+            cp mimage_extracted/usr/lib/mimage/Macintosh.exe ./Macintosh.exe
             chmod +x mimage Macintosh.exe
 
       - name: Debug Mimage contents
