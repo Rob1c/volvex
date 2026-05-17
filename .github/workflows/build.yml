@@ -44,17 +44,11 @@ jobs:
 
       - name: Download and Extract Mimage
         run: |
-            wget "${{ steps.mimage_api.outputs.deb_url }}" -O mimage.deb
-            dpkg-deb -x mimage.deb mimage_extracted
-            find mimage_extracted -type f
-            cp mimage_extracted/usr/bin/mimage ./mimage
-            cp mimage_extracted/usr/lib/mimage/Macintosh.exe ./Macintosh.exe
-            chmod +x mimage Macintosh.exe
-
-      - name: Debug Mimage contents
-        run: |
+          wget "${{ steps.mimage_api.outputs.deb_url }}" -O mimage.deb
           dpkg-deb -x mimage.deb mimage_extracted
-          find mimage_extracted -type f
+          cp mimage_extracted/usr/bin/mimage ./mimage
+          cp mimage_extracted/usr/lib/mimage/Macintosh.exe ./Macintosh.exe
+          chmod +x mimage Macintosh.exe
 
       - name: Set Debian Version
         run: |
@@ -70,7 +64,6 @@ jobs:
 
           rsync -a --exclude='.git' --exclude='build_env' --exclude='mimage.deb' --exclude='mimage_extracted' ./ "$STRUCTURE_DIR/"
 
-          # generate changelog with current date
           cat > "$STRUCTURE_DIR/debian/changelog" <<EOF
           volvex (${VERSION}-1) unstable; urgency=low
 
@@ -97,7 +90,6 @@ jobs:
         run: |
           echo "=== build_env ==="
           ls -lah build_env/
-          echo "=== .deb files ==="
           find . -name "*.deb" | xargs ls -lah 2>/dev/null || echo "No .deb found"
 
       - name: Create Source Archives
@@ -108,6 +100,7 @@ jobs:
           git archive --format=tar.gz --output="${REPO}_${VERSION}_source.tar.gz" HEAD
 
       - name: Upload Artifacts
+        id: upload
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}-${{ env.DEB_VERSION }}-build
@@ -117,3 +110,19 @@ jobs:
             build_env/*.buildinfo
             *_source.zip
             *_source.tar.gz
+
+      - name: Trigger apt-repo update
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.APT_REPO_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/Rob1c/apt-repo/dispatches \
+            -d '{
+              "event_type": "new-package",
+              "client_payload": {
+                "repo": "volvex",
+                "run_id": "${{ github.run_id }}",
+                "package": "${{ github.event.repository.name }}-${{ env.DEB_VERSION }}-build"
+              }
+            }'

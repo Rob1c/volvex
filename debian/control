@@ -10,6 +10,8 @@ Package: volvex
 Architecture: amd64
 Depends: ${misc:Depends}, python3, libpyside6-dev, zenity, wine, libgtk-3-0t64
 Recommends: dtc
+Replaces: mimage
+Breaks: mimage
 Description: KryoFlux GUI frontend
  Volvex is a PySide6 graphical frontend for KryoFlux dtc and mimage.
  It allows dumping and writing floppy disk images through a clean
