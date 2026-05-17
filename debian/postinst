@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+chmod +x /usr/bin/volvex
+chmod +x /usr/bin/mimage
+
+if command -v update-desktop-database >/dev/null; then
+    update-desktop-database /usr/share/applications
+fi
+
+if command -v gtk-update-icon-cache >/dev/null && [ -d /usr/share/icons/hicolor ]; then
+    gtk-update-icon-cache -q /usr/share/icons/hicolor
+fi
+
+exit 0

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Volvex
+Comment=KryoFlux GUI frontend
+Exec=volvex
+Icon=volvex
+Terminal=false
+Type=Application
+Categories=Utility;

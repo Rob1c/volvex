@@ -1,0 +1,116 @@
+name: Build Volvex Debian Package
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE.txt'
+      - 'docs/**'
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE.txt'
+      - 'docs/**'
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  VOLVEX_VERSION: "1.0.0"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Debian Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential devscripts debhelper dpkg-dev lintian fakeroot rsync jq wget
+
+      - name: Fetch Latest Mimage Release
+        id: mimage_api
+        run: |
+          JSON=$(curl -s https://api.github.com/repos/Rob1c/Mimage/releases/latest)
+          MIMAGE_VERSION=$(echo "$JSON" | jq -r '.tag_name' | sed 's/^v//')
+          MIMAGE_DEB_URL=$(echo "$JSON" | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url')
+
+          echo "version=$MIMAGE_VERSION" >> $GITHUB_OUTPUT
+          echo "deb_url=$MIMAGE_DEB_URL" >> $GITHUB_OUTPUT
+          echo "MIMAGE_VERSION=$MIMAGE_VERSION" >> $GITHUB_ENV
+
+      - name: Download and Extract Mimage
+        run: |
+          wget "${{ steps.mimage_api.outputs.deb_url }}" -O mimage.deb
+          # Estrae il .deb e recupera mimage e Macintosh.exe
+          dpkg-deb -x mimage.deb mimage_extracted
+          cp mimage_extracted/usr/bin/mimage ./mimage
+          cp mimage_extracted/usr/bin/Macintosh.exe ./Macintosh.exe
+          chmod +x mimage Macintosh.exe
+
+      - name: Set Debian Version
+        run: |
+          echo "DEB_VERSION=${{ env.VOLVEX_VERSION }}-1" >> $GITHUB_ENV
+
+      - name: Prepare Debian Build Environment
+        run: |
+          REPO="${{ github.event.repository.name }}"
+          VERSION="${{ env.VOLVEX_VERSION }}"
+          STRUCTURE_DIR="build_env/${REPO}-${VERSION}"
+
+          mkdir -p "$STRUCTURE_DIR"
+
+          # Copia tutto il repo (incluso debian/)
+          rsync -a --exclude='.git' --exclude='build_env' --exclude='mimage.deb' --exclude='mimage_extracted' ./ "$STRUCTURE_DIR/"
+
+          # Genera changelog con data corrente
+          cat > "$STRUCTURE_DIR/debian/changelog" <<EOF
+          volvex (${VERSION}-1) unstable; urgency=low
+
+            * Automated build. Bundled Mimage ${{ env.MIMAGE_VERSION }}.
+
+           -- Roberto Chichiarelli <roberto.chichiarelli@gmail.com>  $(date -R)
+          EOF
+
+          # Genera tarball orig
+          cd build_env
+          tar -cJf "${REPO}_${VERSION}.orig.tar.xz" \
+            --exclude="${REPO}-${VERSION}/debian" \
+            "${REPO}-${VERSION}/"
+
+      - name: Build Debian Package
+        run: |
+          REPO="${{ github.event.repository.name }}"
+          VERSION="${{ env.VOLVEX_VERSION }}"
+          cd "build_env/${REPO}-${VERSION}"
+          chmod +x debian/postinst debian/postrm debian/rules volvex
+          debuild -b -us -uc
+
+      - name: Debug - List build output
+        if: always()
+        run: |
+          echo "=== build_env ==="
+          ls -lah build_env/
+          echo "=== .deb files ==="
+          find . -name "*.deb" | xargs ls -lah 2>/dev/null || echo "No .deb found"
+
+      - name: Create Source Archives
+        run: |
+          REPO="${{ github.event.repository.name }}"
+          VERSION="${{ env.VOLVEX_VERSION }}"
+          git archive --format=zip --output="${REPO}_${VERSION}_source.zip" HEAD
+          git archive --format=tar.gz --output="${REPO}_${VERSION}_source.tar.gz" HEAD
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-${{ env.DEB_VERSION }}-build
+          path: |
+            build_env/*.deb
+            build_env/*.changes
+            build_env/*.buildinfo
+            *_source.zip
+            *_source.tar.gz
