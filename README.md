@@ -1,7 +1,7 @@
 <table>
   <tr>
     <td width="200">
-      <img src="volvex.svg" width="200" alt="Volvex Logo">
+      <img src="volvex.svg" width="200" alt="Welcome to Volvex">
     </td>
     <td>
       <h1>Volvex</h1>
@@ -41,7 +41,7 @@ Bundled `Macintosh.exe` is copyright by ZrX (KryoFlux Forums), included as custo
 
 ## 📦 Package Details
 
-- **Version**: `1.0.0`
+- **Latest Version**: `1.0.0`
 - **Architecture**: `x86_64 (amd64)`
 - **Dependencies**: `python3`, `python3-pyside6`, `zenity`, `wine`, `libgtk-3-0`
 - **Recommends**: `dtc` (install separately from [kryoflux.com](https://www.kryoflux.com/))
