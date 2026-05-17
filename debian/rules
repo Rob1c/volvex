@@ -3,4 +3,9 @@
 	dh $@
 
 override_dh_install:
-	dh_install
+	install -Dm755 volvex debian/volvex/usr/bin/volvex
+	install -Dm755 mimage debian/volvex/usr/bin/mimage
+	install -Dm644 Macintosh.exe debian/volvex/usr/lib/mimage/Macintosh.exe
+	install -Dm644 volvex.py debian/volvex/usr/lib/volvex/volvex.py
+	install -Dm644 volvex.desktop debian/volvex/usr/share/applications/volvex.desktop
+	install -Dm644 volvex.svg debian/volvex/usr/share/icons/hicolor/scalable/apps/volvex.svg
