@@ -1,7 +1,7 @@
 <table>
   <tr>
     <td width="200">
-      <img src="assets/logo.png" width="200" alt="Volvex Logo">
+      <img src="volvex.svg" width="200" alt="Volvex Logo">
     </td>
     <td>
       <h1>Volvex</h1>
