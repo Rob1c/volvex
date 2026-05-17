@@ -58,7 +58,7 @@
   </defs>
   <!-- freccia circolare, quasi chiusa, con punta in basso a destra -->
   <path
-     d="m 259.14894,140.53192 a 244.23349,244.23349 0 1 1 190,450"
+     d="m 248.93617,121.7311 a 244.23349,244.23349 0 1 1 190,450"
      fill="none"
      stroke="#ff6600"
      stroke-width="6"
@@ -68,9 +68,9 @@
      id="path2" />
   <!-- wordmark centrato -->
   <text
-     x="340"
-     y="375"
+     x="344.53589"
+     y="375.5957"
      text-anchor="middle"
-     style="fill:rgb(255, 102, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Liberation Mono&quot;, &quot;Courier New&quot;, monospace;font-size:108px;font-weight:700;text-anchor:middle;dominant-baseline:auto"
+     style="color:#ffffff;font-weight:700;font-size:108px;font-family:'Liberation Mono', 'Courier New', monospace;dominant-baseline:auto;text-anchor:middle;opacity:1;fill:#ff6600;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter"
      id="text2">VOLVEX</text>
 </svg>
