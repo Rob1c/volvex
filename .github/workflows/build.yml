@@ -44,11 +44,12 @@ jobs:
 
       - name: Download and Extract Mimage
         run: |
-          wget "${{ steps.mimage_api.outputs.deb_url }}" -O mimage.deb
-          dpkg-deb -x mimage.deb mimage_extracted
-          cp mimage_extracted/usr/bin/mimage ./mimage
-          cp mimage_extracted/usr/bin/Macintosh.exe ./Macintosh.exe
-          chmod +x mimage Macintosh.exe
+            wget "${{ steps.mimage_api.outputs.deb_url }}" -O mimage.deb
+            dpkg-deb -x mimage.deb mimage_extracted
+            find mimage_extracted -type f
+            cp mimage_extracted/usr/bin/mimage ./mimage
+            cp mimage_extracted/usr/bin/Macintosh.exe ./Macintosh.exe
+            chmod +x mimage Macintosh.exe
 
       - name: Debug Mimage contents
         run: |
