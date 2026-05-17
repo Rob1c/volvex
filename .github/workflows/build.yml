@@ -45,11 +45,15 @@ jobs:
       - name: Download and Extract Mimage
         run: |
           wget "${{ steps.mimage_api.outputs.deb_url }}" -O mimage.deb
-          # Estrae il .deb e recupera mimage e Macintosh.exe
           dpkg-deb -x mimage.deb mimage_extracted
           cp mimage_extracted/usr/bin/mimage ./mimage
           cp mimage_extracted/usr/bin/Macintosh.exe ./Macintosh.exe
           chmod +x mimage Macintosh.exe
+
+      - name: Debug Mimage contents
+        run: |
+          dpkg-deb -x mimage.deb mimage_extracted
+          find mimage_extracted -type f
 
       - name: Set Debian Version
         run: |
@@ -63,10 +67,9 @@ jobs:
 
           mkdir -p "$STRUCTURE_DIR"
 
-          # Copia tutto il repo (incluso debian/)
           rsync -a --exclude='.git' --exclude='build_env' --exclude='mimage.deb' --exclude='mimage_extracted' ./ "$STRUCTURE_DIR/"
 
-          # Genera changelog con data corrente
+          # generate changelog with current date
           cat > "$STRUCTURE_DIR/debian/changelog" <<EOF
           volvex (${VERSION}-1) unstable; urgency=low
 
@@ -75,7 +78,6 @@ jobs:
            -- Roberto Chichiarelli <roberto.chichiarelli@gmail.com>  $(date -R)
           EOF
 
-          # Genera tarball orig
           cd build_env
           tar -cJf "${REPO}_${VERSION}.orig.tar.xz" \
             --exclude="${REPO}-${VERSION}/debian" \
