@@ -96,20 +96,16 @@ jobs:
         run: |
           REPO="${{ github.event.repository.name }}"
           VERSION="${{ env.VOLVEX_VERSION }}"
-          git archive --format=zip --output="${REPO}_${VERSION}_source.zip" HEAD
-          git archive --format=tar.gz --output="${REPO}_${VERSION}_source.tar.gz" HEAD
+          mkdir -p build_env/sources
+          git archive --format=zip --output="build_env/sources/${REPO}_${VERSION}_source.zip" HEAD
+          git archive --format=tar.gz --output="build_env/sources/${REPO}_${VERSION}_source.tar.gz" HEAD
 
       - name: Upload Artifacts
         id: upload
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}-${{ env.DEB_VERSION }}-build
-          path: |
-            build_env/*.deb
-            build_env/*.changes
-            build_env/*.buildinfo
-            *_source.zip
-            *_source.tar.gz
+          path: build_env/
 
       - name: Trigger apt-repo update
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
