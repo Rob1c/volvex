@@ -17,7 +17,6 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  VOLVEX_VERSION: "1.0.0"
 
 jobs:
   build:
@@ -30,6 +29,19 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential devscripts debhelper dpkg-dev lintian fakeroot rsync jq wget
+
+      - name: Read Version from Debian Changelog
+        run: |
+          DEB_VERSION=$(dpkg-parsechangelog -S Version)
+          VOLVEX_VERSION=$(echo "$DEB_VERSION" | sed 's/-[^-]*$//')
+
+          # save env vars in Actions
+          echo "DEB_VERSION=$DEB_VERSION" >> $GITHUB_ENV
+          echo "VOLVEX_VERSION=$VOLVEX_VERSION" >> $GITHUB_ENV
+
+          echo "=== Info Versione Rilevata ==="
+          echo "Debian Version: $DEB_VERSION"
+          echo "Upstream Version: $VOLVEX_VERSION"
 
       - name: Fetch Latest Mimage Release
         id: mimage_api
@@ -50,10 +62,6 @@ jobs:
           cp mimage_extracted/usr/lib/mimage/Macintosh.exe ./Macintosh.exe
           chmod +x mimage Macintosh.exe
 
-      - name: Set Debian Version
-        run: |
-          echo "DEB_VERSION=${{ env.VOLVEX_VERSION }}-1" >> $GITHUB_ENV
-
       - name: Prepare Debian Build Environment
         run: |
           REPO="${{ github.event.repository.name }}"
@@ -63,14 +71,6 @@ jobs:
           mkdir -p "$STRUCTURE_DIR"
 
           rsync -a --exclude='.git' --exclude='build_env' --exclude='mimage.deb' --exclude='mimage_extracted' ./ "$STRUCTURE_DIR/"
-
-          cat > "$STRUCTURE_DIR/debian/changelog" <<EOF
-          volvex (${VERSION}-1) unstable; urgency=low
-
-            * Automated build. Bundled Mimage ${{ env.MIMAGE_VERSION }}.
-
-           -- Roberto Chichiarelli <roberto.chichiarelli@gmail.com>  $(date -R)
-          EOF
 
           cd build_env
           tar -cJf "${REPO}_${VERSION}.orig.tar.xz" \
