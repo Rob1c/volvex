@@ -1,8 +1,72 @@
 [Desktop Entry]
 Name=Volvex
-Comment=KryoFlux GUI frontend
+GenericName=Floppy Disk Imager and Writer
+GenericName[ar]=أداة نسخ وكتابة الأقراص المرنة
+GenericName[ca]=Utilitat d'imatges di disquets
+GenericName[co]=Utilità di floppy disk
+GenericName[da]=Disketteremedieprogram
+GenericName[de]=Disketten-Abbild-Dienstprogramm
+GenericName[el]=Εφαρμογή εικόνων δισκέτας
+GenericName[es]=Utilidad de imágenes de disquete
+GenericName[fr]=Utilitaire d'images de disquettes
+GenericName[hi]=फ्लॉपी डिस्क टूल
+GenericName[gu]=ફ્લોપી ડિસ્ક ટૂલ
+GenericName[kn]=ಫ್ಲಾಪಿ ಡಿಸ್ಕ್ ಉಪಕರಣ
+GenericName[it]=Strumento per scrittura e lettura di dischi floppy
+GenericName[ta]=ஃப்ளாப்பி வட்டு கருவி
+GenericName[la]=Utilitas disci flexibilis
+GenericName[ja]=フロッピーディスクイメージユーティリティ
+GenericName[ko]=플로피 디스크 이미지 유틸리티
+GenericName[lt]=Disketėlių įrankis
+GenericName[nl]=Diskettenhulpprogramma
+GenericName[pl]=Narzędzie do obrazów dyskietek
+GenericName[pt_BR]=Utilitário de cópia e gravação de disquetes
+GenericName[pt_PT]=Utilitário de cópia e gravação de disquetes
+GenericName[ru]=Утилита для работы с образами дискет
+GenericName[sk]=Nástroj na prácu s disketami
+GenericName[tr]=Disket Kalıbı Yazıcı ve Okuyucu
+GenericName[uk]=Утиліта для роботи з образами дискет
+GenericName[zh_CN]=软盘镜像工具
+GenericName[zh_TW]=軟碟映像檔工具
+
+Comment=Dump and write floppy disks
+Comment[ar]=نسخ وكتابة الأقراص المرنة
+Comment[ca]=Aboca i escriu disquets
+Comment[co]=Leghje è scrive floppy disk
+Comment[da]=Dump og skriv disketter
+Comment[de]=Disketten auslesen und beschreiben
+Comment[el]=Αντίγραφα ασφαλείας και εγγραφή δισκετών
+Comment[es]=Volcar y escribir disquetes
+Comment[fr]=Créer et écrire des images de disquettes
+Comment[hi]=फ्लॉपी डिस्क डंप और राइट करें
+Comment[it]=Leggi e scrivi dischi floppy
+Comment[ja]=フロッピーディスクのダンプと書き込み
+Comment[ko]=플로피 디스크 덤프 및 쓰기
+Comment[lt]=Kurti ir įrašyti disketėlių kopijas
+Comment[nl]=Disketten dumpen en beschrijven
+Comment[pl]=Zrzucanie i zapisywanie dyskietek
+Comment[pt_BR]=Copiar e gravar disquetes
+Comment[pt_PT]=Copiar e gravar disquetes
+Comment[ru]=Дамп и запись дискет
+Comment[sk]=Vytvára dumpy a zapisuje disky.
+Comment[tr]=Disket dökümü al ve yaz
+Comment[uk]=Дамп та запис дискет
+Comment[zh_CN]=软盘转储与写入
+Comment[zh_TW]=軟碟傾印與寫入
+
+
+
+Comment=KryoFlux's dtc + Mimage GUI frontend
 Exec=volvex
 Icon=volvex
-Terminal=false
+
+StartupWMClass=Volvex
+
 Type=Application
-Categories=Utility;
+Categories=Utilities;Floppy;Low-LevelWriting;DiskDumping;DiskWriting
+
+Keywords=floppy; terminal; low-level writing; dumping; disk writing; disk dumping
+
+Exec=env GDK_BACKEND=x11 volvex %F
+StartupNotify=false
+Terminal=false

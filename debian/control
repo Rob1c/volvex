@@ -12,7 +12,7 @@ Depends: ${misc:Depends}, python3, libpyside6-dev, zenity, wine, wine32, libgtk-
 Recommends: dtc
 Replaces: mimage
 Breaks: mimage
-Description: KryoFlux GUI frontend + Mimage GUI frontend
+Description: KryoFlux's dtc + Mimage GUI frontend
  Volvex is a PySide6 graphical frontend for KryoFlux dtc and mimage.
  It allows dumping and writing floppy disk images through a clean
  interface, with support for all dtc image types, track range selection,
