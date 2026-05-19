@@ -4,6 +4,6 @@
 
 override_dh_install:
 	install -Dm755 volvex debian/volvex/usr/bin/volvex
-	install -Dm644 volvex.py debian/volvex/usr/lib/volvex/volvex.py
+	install -Dm755 volvex.py debian/volvex/usr/lib/volvex/volvex.py
 	install -Dm644 volvex.desktop debian/volvex/usr/share/applications/volvex.desktop
 	install -Dm644 volvex.svg debian/volvex/usr/share/icons/hicolor/scalable/apps/volvex.svg
