@@ -43,7 +43,7 @@ Bundled `Macintosh.exe` is copyright by ZrX (KryoFlux Forums), included as custo
 
 - **Latest Version**: `1.0.0`
 - **Architecture**: `x86_64 (amd64)`
-- **Dependencies**: `python3`, `python3-pyside6`, `zenity`, `wine`, `libgtk-3-0`
+- **Dependencies**: `python3`, `python3-pyside6.qtwidgets`, `python3-pyside6.qtcore`, `python3-pyside6.qtgui`, `zenity`, `wine`, `libgtk-3-0t64`
 - **Recommends**: `dtc` (install separately from [kryoflux.com](https://www.kryoflux.com/))
 - **Bundled**: `mimage` (latest release, fetched automatically at build time)
 

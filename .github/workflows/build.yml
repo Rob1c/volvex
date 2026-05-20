@@ -7,6 +7,8 @@ on:
       - '**.md'
       - 'LICENSE.txt'
       - 'docs/**'
+      - '**.png'
+      - '**.svg'
   pull_request:
     branches: [ "main" ]
     paths-ignore:
