@@ -51,7 +51,7 @@ Bundled `Macintosh.exe` is copyright by ZrX (KryoFlux Forums), included as custo
 
 ## Debian Based Systems
 You can install Volvex in two different ways:
-1. Via repo:
+### 1. Via repo:
 
 ### Add the repository
 ```bash
@@ -61,7 +61,7 @@ sudo apt update
 sudo apt install volvex
 ```
 
-2. Otherwise, you can install it via the .deb package (CI/CD generated).
+### 2. Otherwise, you can install it via the .deb package (CI/CD generated).
 You can use apt (**recommended**, resolves dependencies automatically):
 
 ```bash
