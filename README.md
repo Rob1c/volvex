@@ -50,15 +50,19 @@ Bundled `Macintosh.exe` is copyright by ZrX (KryoFlux Forums), included as custo
 ## Installation
 
 ## Debian Based Systems
-Since Volvex is currently in the APT repos, you can simply install it  with:
+You can install Volvex in two different ways:
+1. Via repo:
 
+### Add the repository
 ```bash
+curl -s https://Rob1c.github.io/apt-repo/volvex-key.asc | sudo gpg --dearmor -o /usr/share/keyrings/volvex.gpg
+echo "deb [signed-by=/usr/share/keyrings/volvex.gpg] https://Rob1c.github.io/apt-repo stable main" | sudo tee /etc/apt/sources.list.d/volvex.list
+sudo apt update
 sudo apt install volvex
 ```
 
-Otherwise, you can install it via the .deb package (CI/CD generated).
+2. Otherwise, you can install it via the .deb package (CI/CD generated).
 You can use apt (**recommended**, resolves dependencies automatically):
-
 
 ```bash
 sudo apt install ./volvex_[version]_amd64.deb
