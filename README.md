@@ -7,7 +7,7 @@
       <h1>Volvex</h1>
       <img src="https://github.com/Rob1c/volvex/actions/workflows/build.yml/badge.svg" alt="Build Status">
       <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version">
-      <img src="https://img.shields.io/badge/license-CC--BY--NC--4.0-lightgrey" alt="License">
+      <img src="https://img.shields.io/badge/GPL--3.0-blue" alt="License">
       <img src="https://img.shields.io/badge/platform-Debian%20|%20Ubuntu-orange" alt="Platform">
     </td>
   </tr>
@@ -33,19 +33,17 @@ It provides a simple, procedural and intuitive interface for dumping and writing
 
 ## ⚖️ License
 
-Volvex is released under the [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license.  
-Bundled `Macintosh.exe` is copyright by ZrX (KryoFlux Forums), included as custom freeware.
+Volvex is released under the [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt) license.
 
-> **Note**: KryoFlux `dtc` is proprietary software owned by KryoFlux Products & Services Ltd / SPS.  
+> **Note**: KryoFlux `dtc` is proprietary software owned by KryoFlux Products & Services Ltd / SPS.
 > Volvex does not include, modify, or redistribute `dtc`.
 
 ## 📦 Package Details
 
 - **Latest Version**: `1.0.0`
 - **Architecture**: `x86_64 (amd64)`
-- **Dependencies**: `python3`, `python3-pyside6.qtwidgets`, `python3-pyside6.qtcore`, `python3-pyside6.qtgui`, `zenity`, `wine`, `libgtk-3-0t64`
-- **Recommends**: `dtc` (install separately from [kryoflux.com](https://www.kryoflux.com/))
-- **Bundled**: `mimage` (latest release, fetched automatically at build time)
+- **Dependencies**: `python3`, `python3-pyside6.qtwidgets`, `python3-pyside6.qtcore`, `python3-pyside6.qtgui`, `zenity`, `libgtk-3-0t64`
+- **Recommends**: `dtc` (install separately from [kryoflux.com](https://www.kryoflux.com/)), `mimage`
 
 ## Installation
 
@@ -78,6 +76,7 @@ Then launch from your application menu or run:
 ```bash
 volvex
 ```
+
 
 ### dtc
 

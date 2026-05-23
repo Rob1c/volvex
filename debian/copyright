@@ -4,13 +4,7 @@ Source: https://github.com/Rob1c/volvex
 
 Files: *
 Copyright: 2026 Roberto Chichiarelli <roberto.chichiarelli@gmail.com>
-License: CC-BY-NC-4.0
+License: GPL-3.0-only
 
-Files: Macintosh.exe
-Copyright: ZrX (KryoFlux Forums)
-License: custom-freeware
- Included with permission as custom freeware.
- Redistribution allowed for non-commercial purposes only.
-
-License: CC-BY-NC-4.0
- https://creativecommons.org/licenses/by-nc/4.0/
+License: GPL-3.0-only
+ https://www.gnu.org/licenses/gpl-3.0.txt

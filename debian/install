@@ -1,6 +1,4 @@
 volvex.py usr/lib/volvex/
 volvex usr/bin/
-mimage usr/bin/
-Macintosh.exe usr/lib/volvex/
 volvex.desktop usr/share/applications/
 volvex.svg usr/share/icons/hicolor/scalable/apps/
