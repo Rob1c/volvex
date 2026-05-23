@@ -1,3 +1,13 @@
+volvex (1.0.0-4) unstable; urgency=low
+
+  * Added debian/source/format (3.0 quilt)
+  * Bumped Standards-Version to 4.7.3
+  * Added Homepage, Vcs-Git, Vcs-Browser to debian/control
+  * Added Upstream-Contact to debian/copyright
+  * Added #DEBHELPER# token to postinst and postrm
+
+ -- Roberto Chichiarelli <roberto.chichiarelli@gmail.com>  Sat, 23 May 2026 19:17:00 +0200
+
 volvex (1.0.0-3) unstable; urgency=low
 
   * Changed license from CC-BY-NC-4.0 to GPL-3.0-only

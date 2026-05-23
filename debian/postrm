@@ -9,4 +9,6 @@ if command -v gtk-update-icon-cache >/dev/null && [ -d /usr/share/icons/hicolor 
     gtk-update-icon-cache -q /usr/share/icons/hicolor
 fi
 
+#DEBHELPER#
+
 exit 0

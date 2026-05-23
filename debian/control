@@ -3,8 +3,11 @@ Section: utils
 Priority: optional
 Maintainer: Roberto Chichiarelli <roberto.chichiarelli@gmail.com>
 Build-Depends: debhelper-compat (= 13)
-Standards-Version: 4.7.0
+Standards-Version: 4.7.3
 Rules-Requires-Root: no
+Homepage: https://github.com/Rob1c/volvex
+Vcs-Git: https://github.com/Rob1c/volvex.git
+Vcs-Browser: https://github.com/Rob1c/volvex
 
 Package: volvex
 Architecture: all
