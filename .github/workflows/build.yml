@@ -30,39 +30,16 @@ jobs:
       - name: Install Debian Build Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential devscripts debhelper dpkg-dev lintian fakeroot rsync jq wget
+          sudo apt-get install -y build-essential devscripts debhelper dpkg-dev lintian fakeroot rsync
 
       - name: Read Version from Debian Changelog
         run: |
           DEB_VERSION=$(dpkg-parsechangelog -S Version)
           VOLVEX_VERSION=$(echo "$DEB_VERSION" | sed 's/-[^-]*$//')
-
-          # save env vars in Actions
           echo "DEB_VERSION=$DEB_VERSION" >> $GITHUB_ENV
           echo "VOLVEX_VERSION=$VOLVEX_VERSION" >> $GITHUB_ENV
-
-          echo "=== Info Versione Rilevata ==="
           echo "Debian Version: $DEB_VERSION"
           echo "Upstream Version: $VOLVEX_VERSION"
-
-      - name: Fetch Latest Mimage Release
-        id: mimage_api
-        run: |
-          JSON=$(curl -s https://api.github.com/repos/Rob1c/Mimage/releases/latest)
-          MIMAGE_VERSION=$(echo "$JSON" | jq -r '.tag_name' | sed 's/^v//')
-          MIMAGE_DEB_URL=$(echo "$JSON" | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url')
-
-          echo "version=$MIMAGE_VERSION" >> $GITHUB_OUTPUT
-          echo "deb_url=$MIMAGE_DEB_URL" >> $GITHUB_OUTPUT
-          echo "MIMAGE_VERSION=$MIMAGE_VERSION" >> $GITHUB_ENV
-
-      - name: Download and Extract Mimage
-        run: |
-          wget "${{ steps.mimage_api.outputs.deb_url }}" -O mimage.deb
-          dpkg-deb -x mimage.deb mimage_extracted
-          cp mimage_extracted/usr/bin/mimage ./mimage
-          cp mimage_extracted/usr/lib/mimage/Macintosh.exe ./Macintosh.exe
-          chmod +x mimage Macintosh.exe
 
       - name: Prepare Debian Build Environment
         run: |
@@ -71,15 +48,14 @@ jobs:
           STRUCTURE_DIR="build_env/${REPO}-${VERSION}"
 
           mkdir -p "$STRUCTURE_DIR"
-
-          rsync -a --exclude='.git' --exclude='build_env' --exclude='mimage.deb' --exclude='mimage_extracted' ./ "$STRUCTURE_DIR/"
+          rsync -a --exclude='.git' --exclude='build_env' ./ "$STRUCTURE_DIR/"
 
           cd build_env
           tar -cJf "${REPO}_${VERSION}.orig.tar.xz" \
             --exclude="${REPO}-${VERSION}/debian" \
             "${REPO}-${VERSION}/"
 
-      - name: Build Debian Package
+      - name: Build Binary Package
         run: |
           REPO="${{ github.event.repository.name }}"
           VERSION="${{ env.VOLVEX_VERSION }}"
@@ -87,12 +63,19 @@ jobs:
           chmod +x debian/postinst debian/postrm debian/rules volvex
           debuild -b -us -uc
 
-      - name: Debug - List build output
-        if: always()
+      - name: Build Source Package
         run: |
-          echo "=== build_env ==="
-          ls -lah build_env/
-          find . -name "*.deb" | xargs ls -lah 2>/dev/null || echo "No .deb found"
+          REPO="${{ github.event.repository.name }}"
+          VERSION="${{ env.VOLVEX_VERSION }}"
+          cd "build_env/${REPO}-${VERSION}"
+          debuild -S -us -uc
+
+      - name: Run Lintian
+        run: |
+          REPO="${{ github.event.repository.name }}"
+          DEB_VERSION="${{ env.DEB_VERSION }}"
+          lintian "build_env/${REPO}_${DEB_VERSION}_all.deb" || true
+          lintian "build_env/${REPO}_${DEB_VERSION}.dsc" || true
 
       - name: Create Source Archives
         run: |
@@ -103,7 +86,6 @@ jobs:
           git archive --format=tar.gz --output="build_env/sources/${REPO}_${VERSION}_source.tar.gz" HEAD
 
       - name: Upload Artifacts
-        id: upload
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}-${{ env.DEB_VERSION }}-build
