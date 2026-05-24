@@ -67,9 +67,12 @@ jobs:
         run: |
           REPO="${{ github.event.repository.name }}"
           VERSION="${{ env.VOLVEX_VERSION }}"
-          cp "build_env/${REPO}_${VERSION}.orig.tar.xz" "build_env/"
           cd "build_env/${REPO}-${VERSION}"
           debuild -S -us -uc
+          echo "=== changes content ==="
+          cat ../volvex_1.0.0-4_source.changes || true
+          echo "=== files in build_env ==="
+          ls -la ../
 
       - name: Run Lintian
         run: |
