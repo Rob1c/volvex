@@ -67,6 +67,7 @@ jobs:
         run: |
           REPO="${{ github.event.repository.name }}"
           VERSION="${{ env.VOLVEX_VERSION }}"
+          cp "build_env/${REPO}_${VERSION}.orig.tar.xz" "build_env/"
           cd "build_env/${REPO}-${VERSION}"
           debuild -S -us -uc
 
