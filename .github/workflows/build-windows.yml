@@ -1,0 +1,44 @@
+name: Build Volvex Windows Executable
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE.txt'
+      - 'docs/**'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pip install PySide6
+
+      - name: Convert SVG to ICO
+        run: |
+          choco install imagemagick -y
+          magick volvex.svg -resize 256x256 volvex.ico
+        shell: powershell
+
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --windowed --icon=volvex.ico --name=volvex volvex.py
+        shell: powershell
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: volvex-windows
+          path: dist/volvex.exe
